@@ -30,6 +30,14 @@ int elapsedMilliseconds(clock_t startTime) {
 
 void printLSHResult(int k_nn_, const flann::Matrix<DistanceType>& gt_dists) {
 	printf("lsh result\n");
+	vector<vector<float>> floatlshDistances;
+	for (int i = 0; i < gt_dists.rows; i++) {
+		floatlshDistances.push_back(vector<float>());
+		for (int j = 0; j < gt_dists.cols; j++) {
+			floatlshDistances[i].push_back(gt_dists[i][j]);
+		}
+		sort(floatlshDistances[i].begin(), floatlshDistances[i].end());
+	}
 	vector<float> minDistanceVector;
 	vector<float> maxDistanceVector;
 	vector<float> meanDistanceVector;
@@ -42,7 +50,7 @@ void printLSHResult(int k_nn_, const flann::Matrix<DistanceType>& gt_dists) {
 	}
 	for (size_t neighbor_index = 0; neighbor_index < k_nn_; ++neighbor_index) {
 		for (size_t row = 0; row < gt_dists.rows; ++row) {
-			float distance = sqrt((float)gt_dists[row][neighbor_index]);
+			float distance = sqrt((float)floatlshDistances[row][neighbor_index]);
 			minDistanceVector[neighbor_index] = min(minDistanceVector[neighbor_index], distance);
 			maxDistanceVector[neighbor_index] = max(maxDistanceVector[neighbor_index], distance);
 			meanDistanceVector[neighbor_index] += distance;
@@ -51,7 +59,7 @@ void printLSHResult(int k_nn_, const flann::Matrix<DistanceType>& gt_dists) {
 	}
 	for (size_t neighbor_index = 0; neighbor_index < k_nn_; ++neighbor_index) {
 		for (size_t row = 0; row < gt_dists.rows; ++row) {
-			float distance = sqrt((float)gt_dists[row][neighbor_index]);
+			float distance = sqrt((float)floatlshDistances[row][neighbor_index]);
 			float diff = distance - meanDistanceVector[neighbor_index];
 			stdVarianceDistanceVector[neighbor_index] += diff*diff;
 		}

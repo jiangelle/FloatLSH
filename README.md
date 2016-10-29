@@ -1,36 +1,9 @@
-FLANN - Fast Library for Approximate Nearest Neighbors
-======================================================
-
-FLANN is a library for performing fast approximate nearest neighbor searches in high dimensional spaces. It contains a collection of algorithms we found to work best for nearest neighbor search and a system for automatically choosing the best algorithm and optimum parameters depending on the dataset.
-FLANN is written in C++ and contains bindings for the following languages: C, MATLAB, Python, and Ruby.
-
-
-Documentation
--------------
-
-Check FLANN web page [here](http://www.cs.ubc.ca/research/flann).
-
-Documentation on how to use the library can be found in the doc/manual.pdf file included in the release archives.
-
-More information and experimental results can be found in the following paper:
-
-  * Marius Muja and David G. Lowe, "Fast Approximate Nearest Neighbors with Automatic Algorithm Configuration", in International Conference on Computer Vision Theory and Applications (VISAPP'09), 2009 [(PDF)](http://people.cs.ubc.ca/~mariusm/uploads/FLANN/flann_visapp09.pdf) [(BibTex)](http://people.cs.ubc.ca/~mariusm/index.php/FLANN/BibTex)
-
-
-Getting FLANN
--------------
-
-If you want to try out the latest changes or contribute to FLANN, then it's recommended that you checkout the git source repository: `git clone git://github.com/mariusmuja/flann.git`
-
-If you just want to browse the repository, you can do so by going [here](https://github.com/mariusmuja/flann).
-
-
-Conditions of use
------------------
-
-FLANN is distributed under the terms of the [BSD License](https://github.com/mariusmuja/flann/blob/master/COPYING).
-
-Bug reporting
--------------
-
-Please report bugs or feature requests using [github's issue tracker](http://github.com/mariusmuja/flann/issues).
+Locality sensitive hashing for float type is modified under the Locality sensitive hashing for integer.
+And the mainly changes that has been made are in the lsh_index.h and the lsh_table.h.
+In lsh_table.h, the add() function which is used to add points into table has been modified from unsigned char into float,a well as the getBucketFromKey() function.
+The getKey() function has used the newly hashing function for the float type.The function randomFloat() is used to compute b in the report.The function gaussrand() 
+is used to compute the random vector a.The function computeBucketSize() is used to compute the bandWidth W.
+In lsh_index.h, the only change has been made is the getNeighbors() function.The getNeighbors() function for float is wroten.The difference from the origin is the Distance
+type has been modified from Hamming Distance to L2_simple(in NN_index.h),and the modified version has ignored the xor_masks to get the neghboring buckets of the keyBucket.
+In the main.cpp ,the printGroundTruthResult() function is writen to output the result of brute_force searching,the printLSHResult() function is writen to compare the 
+search result from the ground truth.
