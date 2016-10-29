@@ -565,7 +565,7 @@ void LshIndex<L2_Simple<float>>::getNeighbors(const float* vec, ResultSet<float>
 		for (; training_index < last_training_index; ++training_index) {
 			if (removed_ && removed_points_.test(*training_index)) continue;
 			// Compute the Euclidean distance
-			float euclidean_distance = sqrt(distance_(vec, points_[*training_index], veclen_));
+			float euclidean_distance = distance_(vec, points_[*training_index], veclen_);
 			//printf("euclidean_distance:%f\n", euclidean_distance);
 			result.addPoint(euclidean_distance, *training_index);
 		}
