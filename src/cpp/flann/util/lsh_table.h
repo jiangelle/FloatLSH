@@ -40,6 +40,7 @@
 #include <iomanip>
 #include <limits.h>
 #include <algorithm>
+#include <random>
 // TODO as soon as we use C++0x, use the code in USE_UNORDERED_MAP
 #if USE_UNORDERED_MAP
 #include <unordered_map>
@@ -517,25 +518,10 @@ inline float randomFloat() {
 }
 float gaussrand()
 {
-	static float V1;
-	static float V2;
-	static float S;
-	static int phase = 0;
-	float X;
-	if (phase == 0) {
-		do {
-			float U1 = randomFloat();
-			float U2 = randomFloat();
-			V1 = 2 * U1 - 1;
-			V2 = 2 * U2 - 1;
-			S = V1 * V1 + V2 * V2;
-		} while (S >= 1 || S == 0);
-		X = V1 * sqrt(-2 * log(S) / S);
-	}
-	else
-		X = V2 * sqrt(-2 * log(S) / S);
-	phase = 1 - phase;
-	return X;
+	static random_device rd;
+	static mt19937 gen(rd());
+	static normal_distribution<float> d(0.5f, 0.5f/3);
+	return d(gen);
 }
 
 
@@ -550,7 +536,7 @@ inline void LshTable<float>::computeBucketSize(unsigned int feature_size, const 
 		min_feature_value = min(min_feature_value, data_projections[data_index]);
 		max_feature_value = max(max_feature_value, data_projections[data_index]);
 	}
-	bucket_size = floor((max_feature_value - min_feature_value) / bucket_count);
+	bucket_size = ceil((max_feature_value - min_feature_value) / bucket_count);
 	random_offset = randomFloat() * bucket_size;
 }
 

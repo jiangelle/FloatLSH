@@ -60,7 +60,7 @@ public:
 		startTime = clock();
 		index.knnSearch(query, gt_indices, gt_dists, k_nn_, flann::SearchParams(-1));
 		printf("search knn done, %d ms\n", elapsedMilliseconds(startTime));
-		printIndexMatrix(gt_indices);
+		//printIndexMatrix(gt_indices);
 
 		vector<float> minDistanceVector;
 		vector<float> maxDistanceVector;
